@@ -1,0 +1,8 @@
+{
+  "id": "tickets-edge-2026q3",
+  "title": "Tickets résolus — Edge 2, T3 2026",
+  "kind": "TICKET",
+  "classification": "INTERNAL",
+  "updatedAt": "2026-09-08T11:15:00Z",
+  "content": "TCK-1847 — Déconnexions Bluetooth. Sur EdgeOS 3.2.0, certains scanners Zebra DS2208 se déconnectent après la mise en veille. Contournement : désactiver l'économie d'énergie Bluetooth, puis redémarrer le terminal. Le correctif définitif est inclus dans EdgeOS 3.2.1.\n\nTCK-1902 — Synchronisation lente. Après une importation supérieure à 20 000 fiches, l'interface peut afficher un retard de synchronisation pouvant atteindre 15 minutes. Le traitement n'est pas perdu. Le correctif côté serveur a été déployé le 5 septembre 2026.\n\nTCK-1911 — Écran de facturation vide. Un bloqueur de publicité peut empêcher le chargement du prestataire de paiement. Ajouter app.novadesk.example aux sites autorisés résout le problème. Aucun incident de paiement n'a été observé."
+}

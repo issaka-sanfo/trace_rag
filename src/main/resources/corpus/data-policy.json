@@ -1,0 +1,8 @@
+{
+  "id": "policy-data",
+  "title": "Politique interne — Données et IA",
+  "kind": "POLICY",
+  "classification": "INTERNAL",
+  "updatedAt": "2026-09-10T08:00:00Z",
+  "content": "Les collaborateurs ne doivent jamais saisir de mot de passe, clé d'API, secret client ou donnée de carte bancaire dans l'assistant. Les données personnelles doivent être minimisées et masquées dans les journaux techniques.\n\nLes traces de questions-réponses sont conservées 30 jours en environnement de production, puis supprimées. Elles sont accessibles uniquement aux équipes SRE et Qualité autorisées. Les documents classés restricted ne sont accessibles qu'au rôle admin.\n\nToute réponse utilisée pour une décision juridique, financière ou de sécurité doit être vérifiée par un humain à partir des sources citées. Une réponse sans source ou sous le seuil de confiance doit être présentée comme une absence d'information et ne doit pas être complétée par supposition."
+}

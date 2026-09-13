@@ -1,0 +1,87 @@
+<header class="topbar">
+  <a class="brand" href="/" aria-label="TraceRAG Spring accueil">
+    <span class="brand-glyph"><i></i><i></i><b>J</b></span>
+    <span>TraceRAG <em>Angular</em></span>
+  </a>
+  <div class="runtime-badges"><span>ANGULAR 21</span><span>SPRING BOOT API</span></div>
+  <div class="header-actions">
+    <div class="api-status"><i [class.error]="statusError"></i><span>{{ statusText }}</span></div>
+    <label class="role-picker"><span>Accès</span>
+      <select [ngModel]="role" (ngModelChange)="changeRole($event)" aria-label="Rôle d'accès">
+        <option value="guest">Invité</option><option value="employee">Collaborateur</option><option value="admin">Admin</option>
+      </select>
+    </label>
+    <button class="add-button" type="button" (click)="ingestOpen = true"><b>+</b> Source</button>
+  </div>
+</header>
+
+<main class="app-shell">
+  <aside class="documents-pane">
+    <div class="pane-title"><div><p>Knowledge base</p><h2>Corpus indexé</h2></div><span>{{ documents.length | number:'2.0-0' }}</span></div>
+    <div class="document-list">
+      @for (document of documents; track document.id) {
+        <article class="document" [title]="document.title">
+          <span class="doc-icon">{{ document.kind.slice(0, 4) }}</span>
+          <div><strong>{{ document.title }}</strong><small>{{ document.chunkCount }} fragment(s)</small></div>
+          <i class="class-dot" [class.restricted]="document.classification === 'RESTRICTED'"></i>
+        </article>
+      } @empty {
+        <p class="dialog-copy">Aucun document visible pour ce rôle.</p>
+      }
+    </div>
+    <div class="architecture-card"><div class="arch-flow"><span>API</span><i></i><span>RAG</span><i></i><span>TRACE</span></div>
+      <strong>Fail-safe by design</strong><p>Le filtrage RBAC précède le retrieval et chaque réponse est sourcée.</p>
+    </div>
+  </aside>
+
+  <section class="chat-pane">
+    @if (!answers.length) {
+      <div class="hero"><p class="kicker">Assistant interne · Angular + Spring</p>
+        <h1>La connaissance d’entreprise,<br><span>avec ses preuves.</span></h1>
+        <p class="hero-copy">Posez une question sur les produits, spécifications ou incidents. Le pipeline restitue une réponse contrôlée, traçable et vérifiable.</p>
+        <div class="pipeline"><span>Question</span><i>→</i><span>Embedding</span><i>→</i><span>Retrieval</span><i>→</i><span>Réponse</span></div>
+      </div>
+    }
+    <div class="conversation">
+      @for (item of answers; track item.traceId) {
+        <div class="question">{{ item.question }}</div>
+        <article class="answer">
+          <div class="answer-head"><i>{{ item.guardrail.status === 'passed' ? '✓' : '!' }}</i>{{ item.guardrail.status === 'passed' ? 'Réponse sourcée' : 'Réponse contrôlée' }}</div>
+          <div class="answer-text" [class.blocked]="item.guardrail.status !== 'passed'">{{ item.answer }}</div>
+          @if (item.citations.length) {
+            <div class="citations">@for (citation of item.citations; track citation.chunkId) {
+              <div class="citation"><strong>[{{ $index + 1 }}] {{ citation.title }} · score {{ citation.score | number:'1.2-2' }}</strong><p>{{ citation.quote }}</p></div>
+            }</div>
+          }
+          <div class="feedback"><button type="button" (click)="feedback(item.traceId, 'up')">Utile</button><button type="button" (click)="feedback(item.traceId, 'down')">À améliorer</button></div>
+        </article>
+      }
+    </div>
+    <div class="composer-wrap">
+      <div class="suggestions"><button type="button" (click)="ask('Quelle est l’autonomie du terminal Edge 2 ?')">Autonomie Edge 2</button><button type="button" (click)="ask('Comment corriger les déconnexions Bluetooth ?')">Incident Bluetooth</button><button type="button" (click)="ask('Combien de temps gardez-vous les logs ?')">Rétention des traces</button></div>
+      <form class="composer" (ngSubmit)="ask(question); question = ''"><textarea name="question" [(ngModel)]="question" rows="1" maxlength="1000" required placeholder="Interroger le corpus interne…"></textarea><button type="submit" [disabled]="loading"><span>→</span></button></form>
+      <p class="disclaimer">Les réponses sont assistées par IA. Vérifiez les sources avant toute décision sensible.</p>
+    </div>
+  </section>
+
+  <aside class="telemetry-pane">
+    <div class="pane-title"><div><p>Runtime telemetry</p><h2>Dernière trace</h2></div><span class="live">LIVE</span></div>
+    @if (lastAnswer; as trace) {
+      <div class="trace-content"><section class="confidence"><div><span>Score de confiance</span><strong>{{ trace.confidence | percent }}</strong></div><progress max="1" [value]="trace.confidence"></progress></section>
+        <section class="timings"><div><span>Retrieval</span><strong>{{ trace.timing.retrievalMs | number:'1.1-1' }} ms</strong></div><div><span>Generation</span><strong>{{ trace.timing.generationMs | number:'1.1-1' }} ms</strong></div><div><span>End-to-end</span><strong>{{ trace.timing.totalMs | number:'1.1-1' }} ms</strong></div><div><span>Citations</span><strong>{{ trace.citations.length }}</strong></div></section>
+        <section class="guardrail"><i [class.warning]="trace.guardrail.status !== 'passed'">{{ trace.guardrail.status === 'passed' ? '✓' : '!' }}</i><div><span>Policy engine</span><strong>{{ trace.guardrail.status }}</strong></div></section>
+        <section class="provider"><span>Provider</span><code>{{ trace.provider }}</code></section><section class="trace-id"><span>Trace ID</span><code>{{ trace.traceId }}</code></section>
+      </div>
+    } @else { <div class="empty-trace"><div class="radar"><i></i><b></b></div><p>L’observabilité apparaîtra après la première requête.</p></div> }
+  </aside>
+</main>
+
+@if (ingestOpen) {
+  <dialog open>
+    <form class="ingest-form" (ngSubmit)="ingest()"><div class="dialog-head"><div><p>Ingestion pipeline</p><h2>Nouvelle source</h2></div><button type="button" (click)="ingestOpen = false">×</button></div>
+      <p class="dialog-copy">Le document est validé, contrôlé, découpé et indexé par l’API.</p>
+      <div class="form-grid"><label>Titre<input name="title" [(ngModel)]="newDocument.title" required></label><label>Identifiant<input name="id" [(ngModel)]="newDocument.id" required></label><label>Type<select name="kind" [(ngModel)]="newDocument.kind"><option>FAQ</option><option>SPEC</option><option>TICKET</option><option>POLICY</option><option>OTHER</option></select></label><label>Classification<select name="classification" [(ngModel)]="newDocument.classification"><option>INTERNAL</option><option>PUBLIC</option><option>RESTRICTED</option></select></label></div>
+      <label>Contenu<textarea name="content" [(ngModel)]="newDocument.content" rows="7" minlength="20" required></textarea></label><div class="form-message" [class.error]="ingestError">{{ ingestMessage }}</div><button class="primary" type="submit">Indexer dans la JVM <span>→</span></button>
+    </form>
+  </dialog>
+}

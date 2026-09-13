@@ -1,0 +1,8 @@
+{
+  "id": "spec-edge-2",
+  "title": "Spécifications — Terminal NovaDesk Edge 2",
+  "kind": "SPEC",
+  "classification": "INTERNAL",
+  "updatedAt": "2026-09-02T14:30:00Z",
+  "content": "Le terminal NovaDesk Edge 2 possède un écran tactile de 10,1 pouces, 8 Go de mémoire vive et 128 Go de stockage. Sa batterie offre jusqu'à 14 heures d'autonomie dans le profil d'usage standard. Une charge de 45 minutes atteint environ 80 %.\n\nConnectivité : Wi-Fi 6E, Bluetooth 5.3, NFC et port USB-C. Le boîtier est certifié IP54 contre la poussière et les projections d'eau. La plage de fonctionnement recommandée va de 0 °C à 40 °C.\n\nLe système EdgeOS 3 reçoit des correctifs de sécurité pendant 5 ans à compter de la date de commercialisation. Le terminal chiffre le stockage avec AES-256 et prend en charge l'effacement à distance depuis la console Enterprise."
+}

@@ -1,0 +1,7 @@
+target/
+data/runtime/
+*.log
+.idea/
+.vscode/
+frontend/node_modules/
+frontend/.angular/

@@ -1,0 +1,8 @@
+{
+  "id": "faq-novadesk",
+  "title": "FAQ commerciale — NovaDesk",
+  "kind": "FAQ",
+  "classification": "PUBLIC",
+  "updatedAt": "2026-08-28T09:00:00Z",
+  "content": "Abonnements. NovaDesk existe en trois offres : Starter à 19 € par utilisateur et par mois, Team à 39 €, et Enterprise sur devis. L'offre Team inclut les tableaux de bord avancés et jusqu'à 50 automatisations actives.\n\nEssai et résiliation. L'essai gratuit dure 14 jours et ne nécessite pas de carte bancaire. Un client peut résilier à tout moment depuis Paramètres > Facturation. La résiliation prend effet à la fin de la période déjà payée.\n\nRemboursement. Un remboursement intégral peut être demandé dans les 30 jours suivant le premier achat. Les renouvellements ne sont pas remboursables, sauf obligation légale contraire. La demande doit être envoyée à support@novadesk.example avec le numéro de facture.\n\nSupport. Les clients Starter disposent du support par e-mail avec une cible de réponse de 2 jours ouvrés. Team bénéficie d'une cible de 8 heures ouvrées. Enterprise dispose d'une astreinte pour les incidents critiques avec une première réponse en 1 heure."
+}
