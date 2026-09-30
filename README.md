@@ -127,6 +127,14 @@ ollama --version
 ollama list
 ```
 
+`ollama list` affiche les modèles installés sur la machine. Pour afficher les modèles actuellement chargés en mémoire, utiliser :
+
+```powershell
+ollama ps
+```
+
+Une liste vide avec `ollama ps` est normale lorsque le modèle n'est pas en train de traiter une requête. Le provider Ollama utilise deux modèles avec des rôles différents : `embeddinggemma` transforme les questions et les documents en vecteurs pour la recherche, tandis que le modèle de chat (`gemma3:4b` par défaut, ou `qwen3:8b` si configuré) génère la réponse finale.
+
 Télécharger les modèles configurés par défaut :
 
 ```powershell
@@ -155,6 +163,22 @@ $env:OLLAMA_EMBED_MODEL = "embeddinggemma"
 $env:OLLAMA_CHAT_MODEL = "gemma3:4b"
 mvn spring-boot:run
 ```
+
+Les modèles sont sollicités au démarrage pour construire l'index et lors d'une question. Le backend envoie actuellement `keep_alive: 0` à Ollama : les modèles peuvent donc être déchargés juste après la requête et ne plus apparaître dans `ollama ps`. Cela n'empêche pas leur utilisation. Les traces JSONL conservent le provider réellement utilisé :
+
+```json
+"embedding": "ollama/embeddinggemma",
+"generator": "ollama/qwen3:8b"
+```
+
+Pour utiliser le modèle de chat installé `qwen3:8b` à la place du modèle par défaut :
+
+```powershell
+$env:OLLAMA_CHAT_MODEL = "qwen3:8b"
+mvn spring-boot:run
+```
+
+Après l'envoi d'une question, consulter `ollama ps` immédiatement pour observer les modèles chargés. Une trace plus ancienne prouve leur utilisation même si aucun modèle n'est actuellement visible dans cette commande.
 
 Pour supprimer un modèle local :
 
