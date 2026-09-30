@@ -117,3 +117,47 @@ logs/        exemples de traces JSONL
 ```
 
 Les compromis et limites sont détaillés dans [DECISIONS.md](DECISIONS.md).
+
+## Ollama
+
+Pour utiliser le provider Ollama, installer Ollama puis vérifier qu'il est disponible :
+
+```powershell
+ollama --version
+ollama list
+```
+
+Télécharger les modèles configurés par défaut :
+
+```powershell
+ollama pull embeddinggemma
+ollama pull gemma3:4b
+```
+
+Si Ollama ne tourne pas déjà comme service, démarrer le serveur dans un terminal dédié :
+
+```powershell
+ollama serve
+```
+
+Tester la liste des modèles via l'API locale :
+
+```powershell
+curl.exe http://127.0.0.1:11434/api/tags
+```
+
+Lancer l'application avec Ollama comme provider :
+
+```powershell
+$env:RAG_PROVIDER = "ollama"
+$env:OLLAMA_BASE_URL = "http://127.0.0.1:11434"
+$env:OLLAMA_EMBED_MODEL = "embeddinggemma"
+$env:OLLAMA_CHAT_MODEL = "gemma3:4b"
+mvn spring-boot:run
+```
+
+Pour supprimer un modèle local :
+
+```powershell
+ollama rm gemma3:4b
+```
