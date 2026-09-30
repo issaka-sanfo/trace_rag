@@ -68,6 +68,19 @@ curl.exe -X POST http://localhost:8080/api/ask `
   -d "{\"question\":\"Comment corriger les déconnexions Bluetooth ?\",\"topK\":4}"
 ```
 
+### Paramètre `topK`
+
+`topK` indique le nombre maximal de fragments (`chunks`) que le moteur de recherche récupère pour une question. L'API accepte une valeur comprise entre `1` et `8` ; la valeur par défaut est `4`.
+
+Le traitement suit cet ordre :
+
+1. filtrage des fragments selon le rôle RBAC ;
+2. calcul de la similarité et sélection des `topK` meilleurs fragments ;
+3. application du seuil minimal et du seuil relatif de pertinence ;
+4. génération de la réponse à partir des fragments restants.
+
+`topK` est donc une limite maximale, pas une garantie : le seuil peut éliminer certains résultats. Une valeur élevée apporte davantage de contexte, mais peut aussi ajouter du bruit et augmenter le temps de traitement. Le provider local sélectionne ensuite au maximum trois phrases pour construire la réponse extractive.
+
 ## Evaluation et traces
 
 Les tests de non-régression :
